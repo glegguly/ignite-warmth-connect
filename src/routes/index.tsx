@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { Component } from "react";
 import { Facebook, Instagram, Mail, Menu, Phone, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo.png.asset.json";
@@ -47,17 +47,19 @@ const copy = {
 const anchors = ["about", "name", "moments", "events", "contact"];
 const gallery = [moment1, moment3, moment4, moment2, moment5];
 
-function Index() {
-  const [lang, setLang] = useState<Lang>("zh");
-  const [menu, setMenu] = useState(false);
-  const t = copy[lang];
-  return <main className="min-h-screen overflow-x-hidden bg-background text-foreground antialiased">
+class Index extends Component<object, { lang: Lang; menu: boolean }> {
+  state: { lang: Lang; menu: boolean } = { lang: "zh", menu: false };
+
+  render() {
+    const { lang, menu } = this.state;
+    const t = copy[lang];
+    return <main className="min-h-screen overflow-x-hidden bg-background text-foreground antialiased">
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-md">
       <div className="mx-auto flex h-20 max-w-6xl items-center justify-between px-5 sm:px-8">
         <a href="#top" className="flex items-center gap-3"><img src={logo.url} alt="燃點真愛 Kindle True Love" className="h-14 w-auto max-w-40 object-contain" /></a>
         <nav className="hidden items-center gap-6 text-sm text-muted-foreground lg:flex">{t.nav.map((x,i)=><a key={x} href={`#${anchors[i]}`} className="transition-colors hover:text-primary">{x}</a>)}</nav>
-        <div className="flex items-center gap-2"><div className="flex rounded-full bg-surface-deep p-1 text-xs"><Button variant={lang==="zh"?"languageActive":"language"} onClick={()=>setLang("zh")}>繁中</Button><Button variant={lang==="en"?"languageActive":"language"} onClick={()=>setLang("en")}>EN</Button></div><Button asChild variant="ember" className="hidden sm:inline-flex"><a href="#donate">{t.donate}</a></Button><Button variant="language" className="size-10 p-0 lg:hidden" aria-label="Menu" onClick={()=>setMenu(!menu)}>{menu?<X/>:<Menu/>}</Button></div>
-      </div>{menu&&<nav className="grid border-t border-border px-5 py-4 lg:hidden">{t.nav.map((x,i)=><a key={x} href={`#${anchors[i]}`} onClick={()=>setMenu(false)} className="py-3 text-sm">{x}</a>)}</nav>}
+        <div className="flex items-center gap-2"><div className="flex rounded-full bg-surface-deep p-1 text-xs"><Button variant={lang==="zh"?"languageActive":"language"} onClick={()=>this.setState({ lang: "zh" })}>繁中</Button><Button variant={lang==="en"?"languageActive":"language"} onClick={()=>this.setState({ lang: "en" })}>EN</Button></div><Button asChild variant="ember" className="hidden sm:inline-flex"><a href="#donate">{t.donate}</a></Button><Button variant="language" className="size-10 p-0 lg:hidden" aria-label="Menu" onClick={()=>this.setState({ menu: !menu })}>{menu?<X/>:<Menu/>}</Button></div>
+      </div>{menu&&<nav className="grid border-t border-border px-5 py-4 lg:hidden">{t.nav.map((x,i)=><a key={x} href={`#${anchors[i]}`} onClick={()=>this.setState({ menu: false })} className="py-3 text-sm">{x}</a>)}</nav>}
     </header>
 
     <section id="top" className="relative h-[76vh] min-h-[560px] max-h-[760px] overflow-hidden"><img src={hero.url} alt="燃點真愛義工活動" className="absolute inset-0 h-full w-full object-cover"/><div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/40 to-foreground/10"/><div className="absolute inset-0 flex items-end"><div className="mx-auto w-full max-w-6xl px-5 pb-16 sm:px-8 sm:pb-20"><p className="rise rise-one mb-4 text-sm font-medium text-gold">{t.overline}</p><h1 className="rise rise-two max-w-[17ch] whitespace-pre-line font-display text-5xl font-semibold leading-[1.05] text-background sm:text-7xl">{t.title}</h1><p className="rise rise-three mt-5 max-w-[48ch] text-base leading-relaxed text-background/85 sm:text-lg">{t.intro}</p><div className="rise rise-three mt-8 flex gap-3"><Button asChild><a href="#donate">{t.support}</a></Button><Button asChild variant="outlineLight"><a href="#events">{t.join}</a></Button></div></div></div></section>
@@ -74,5 +76,6 @@ function Index() {
 
     <section id="contact" className="mx-auto grid max-w-6xl gap-12 px-5 py-20 sm:px-8 sm:py-28 md:grid-cols-2"><div><p className="mb-3 text-sm font-medium text-primary">{t.contact}</p><h2 className="font-display text-4xl font-semibold">{t.contactTitle}</h2><p className="mt-5 text-muted-foreground">{t.contactText}</p></div><div className="space-y-5"><a href="tel:95511959" className="flex items-center gap-4"><Phone className="text-primary"/><span>9551 1959</span></a><div className="flex items-center gap-4 text-muted-foreground"><Mail className="text-primary"/><span>{t.pending}</span></div><div className="flex gap-3"><a href="#" aria-label="Facebook" className="grid size-11 place-items-center rounded-full bg-surface-deep"><Facebook/></a><a href="#" aria-label="Instagram" className="grid size-11 place-items-center rounded-full bg-surface-deep"><Instagram/></a></div></div></section>
     <footer className="bg-foreground text-background/70"><div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-5 py-10 text-center text-xs sm:flex-row sm:px-8 sm:text-left"><img src={logo.url} alt="燃點真愛" className="h-14 w-auto brightness-0 invert"/><p>© 2026 燃點真愛有限公司 · 91/20257</p><p>{t.footer}</p></div></footer>
-  </main>;
+    </main>;
+  }
 }
