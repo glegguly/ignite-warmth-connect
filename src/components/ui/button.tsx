@@ -8,6 +8,12 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
+        default: "bg-primary text-primary-foreground hover:bg-primary-hover",
+        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        outline: "border border-input bg-background text-foreground hover:bg-accent hover:text-accent-foreground",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        ghost: "text-foreground hover:bg-accent hover:text-accent-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
         ember: "bg-primary px-5 py-2.5 text-primary-foreground hover:bg-primary-hover",
         ink: "bg-foreground px-6 py-3 text-background hover:bg-foreground/90",
         outlineLight: "border border-background/40 px-6 py-3 text-background hover:bg-background/10",
@@ -15,13 +21,21 @@ const buttonVariants = cva(
         languageActive: "bg-foreground px-3 py-1 text-background",
       },
     },
-    defaultVariants: { variant: "ember" },
+    size: {
+      default: "h-10 px-4 py-2",
+      sm: "h-9 px-3",
+      lg: "h-11 px-8",
+      icon: "size-10 p-0",
+    },
+    defaultVariants: { variant: "default", size: "default" },
   },
 );
 
-function Button({ className, variant, asChild = false, ...props }: React.ComponentProps<"button"> & VariantProps<typeof buttonVariants> & { asChild?: boolean }) {
+export interface ButtonProps extends React.ComponentProps<"button">, VariantProps<typeof buttonVariants> { asChild?: boolean }
+
+function Button({ className, variant, size, asChild = false, ...props }: ButtonProps) {
   const Comp = asChild ? Slot : "button";
-  return <Comp className={cn(buttonVariants({ variant }), className)} {...props} />;
+  return <Comp className={cn(buttonVariants({ variant, size }), className)} {...props} />;
 }
 
 export { Button, buttonVariants };
