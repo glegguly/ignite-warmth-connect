@@ -7,6 +7,7 @@ export const getRouter = () => {
 
   const router = createRouter({
     routeTree,
+    basepath: import.meta.env.BASE_URL === "/ignite-warmth-connect/" ? "/ignite-warmth-connect" : "/",
     context: { queryClient },
     scrollRestoration: true,
     defaultPreloadStaleTime: 0,

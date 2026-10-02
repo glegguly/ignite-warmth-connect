@@ -10,3 +10,5 @@
 <!-- LOVABLE:END -->
 
 - Use a single-page bilingual editorial site with client-side language switching; content remains statically bundled for reliability and search visibility.
+- GitHub Pages builds use a repository subpath and prerendered static output while Lovable builds retain root hosting; this keeps both hosts working from the same source.
+- GitHub publishing copies the existing managed media into the generated site rather than committing downloaded binaries; this preserves the original asset source and makes static hosting self-contained.
