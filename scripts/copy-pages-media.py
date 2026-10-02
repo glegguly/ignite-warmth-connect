@@ -1,8 +1,8 @@
 """Bundle the site's existing Lovable-hosted media into a GitHub Pages export."""
 
 import json
+import subprocess
 from pathlib import Path
-from urllib.request import urlopen
 
 
 root = Path(__file__).resolve().parents[1]
@@ -17,13 +17,12 @@ for pointer in sorted((root / "src" / "assets").glob("*.asset.json")):
 
     target = output / path.lstrip("/")
     target.parent.mkdir(parents=True, exist_ok=True)
-    with urlopen(origin + path, timeout=30) as response:
-        if not response.headers.get("Content-Type", "").startswith("image/"):
-            raise ValueError(f"Not an image: {pointer.name}")
-        content = response.read()
-    if len(content) != asset["size"]:
+    subprocess.run(
+        ["curl", "--fail", "--location", "--silent", "--show-error", "--retry", "3", "--output", str(target), origin + path],
+        check=True,
+    )
+    if target.stat().st_size != asset["size"]:
         raise ValueError(f"Incomplete media download: {pointer.name}")
-    target.write_bytes(content)
     print(f"Included {pointer.name}")
 
 if not (output / "index.html").is_file():
