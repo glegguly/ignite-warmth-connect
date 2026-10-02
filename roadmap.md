@@ -1,6 +1,6 @@
 # Tasks
 
 - [x] Identify why GitHub Pages differs from the Lovable website.
-- [ ] Export the bilingual site and its photos under the GitHub Pages subpath.
-- [ ] Publish the generated website with GitHub Actions and document the setup.
-- [ ] Verify the export configuration and published output when available.
+- [x] Configure the bilingual site and photos for the GitHub Pages subpath.
+- [x] Add GitHub Actions publishing and document the Pages source setting.
+- [ ] Confirm the published GitHub page after GitHub Pages is set to GitHub Actions and the next repository sync runs. Blocked by the repository's GitHub Pages setting and deployment outside this workspace.
